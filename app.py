@@ -7,7 +7,7 @@ import pandas as pd
 
 # Loading Data
 def load_data():
-    spotify = pd.read_csv('assets/spotify-2024.csv')
+    spotify = pd.read_csv('spotify-2024.csv')
     spotify['Track Score'] = pd.to_numeric(spotify['Track Score'], errors='coerce') # if any error appear, it will be NaN
     spotify['Release Date'] = pd.to_datetime(spotify['Release Date'])
     spotify['YearMonth'] = spotify['Release Date'].dt.to_period("M")
