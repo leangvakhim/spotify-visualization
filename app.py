@@ -68,7 +68,7 @@ app.layout = dbc.Container([
                         step=10
                     ), #slider
                     dcc.RadioItems(
-                        id='condition-filter',
+                        id='chart-type',
                         options=[
                             {'label': 'Line Chart', 'value': 'line'},
                             {'label': 'Bar Chart', 'value': 'bar'}
@@ -87,10 +87,41 @@ app.layout = dbc.Container([
 ], fluid=True)
 
 # Create our Callbacks
+@app.callback(
+    Output('singer-distribution', 'figure'),
+    Input('singer-filter', 'value'),
+)
+
+def update_distribution(selected_singer):
+    if selected_singer:
+        filtered_df = spotify[spotify['Artist'] == selected_singer]
+    else:
+        filtered_df = spotify
+
+    if filtered_df.empty:
+        return {}
+
+    fig = px.histogram(
+        filtered_df,
+        x='Artist',
+        nbins=5,
+        color="Artist",
+        title="Singer Distribution by Artist",
+        # color_discrete_sequence=["red", 'blue']
+    )
+
+    return fig
+
+@app.callback(
+    Output('condition-distribution', 'figure'),
+    [Input('chart-type', 'value'),
+    Input('spotify-slider', 'value')]
+)
+
+def update_condition(chart_type, slider_values):
 
 
-
-
+    return chart_type, slider_values
 
 
 
